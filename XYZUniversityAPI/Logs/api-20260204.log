@@ -1,0 +1,668 @@
+2026-02-04 12:35:35.937 +03:00 [INF] Background worker initializing...
+2026-02-04 12:35:36.086 +03:00 [INF] Listening for RabbitMQ messages on payments
+2026-02-04 12:35:55.737 +03:00 [INF] HTTP POST /api/auth/login responded 200 in 340.2828 ms
+2026-02-04 12:35:57.794 +03:00 [INF] HTTP POST /api/auth/login responded 200 in 92.8905 ms
+2026-02-04 12:36:12.808 +03:00 [INF] Admin fetching history for CIT-001-2026
+2026-02-04 12:36:12.810 +03:00 [INF] Querying DB for all payments of CIT-001-2026
+2026-02-04 12:36:12.968 +03:00 [INF] HTTP GET /api/Payments/All_Payments responded 200 in 186.8559 ms
+2026-02-04 12:37:23.596 +03:00 [INF] HTTP GET /api/student_validation/validate/CIT-007-2026 responded 401 in 9.3793 ms
+2026-02-04 12:37:28.876 +03:00 [INF] HTTP GET /api/student_validation/validate/CIT-007-2026 responded 401 in 1.1332 ms
+2026-02-04 12:37:30.874 +03:00 [INF] HTTP GET /api/student_validation/validate/CIT-007-2026 responded 401 in 0.7108 ms
+2026-02-04 12:37:35.873 +03:00 [ERR] Failed executing DbCommand (9ms) [Parameters=[@__admissionNumber_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT t."AdmissionNumber", t."CourseId", t."CreatedAt", t."CreatedBy", t."DateOfBirth", t."EnrollmentDate", t."FirstName", t."IsActive", t."IsValid", t."LastName", t."StudentId", t."CourseId0", t."CourseFee", t."CourseName", t."AdminId", t."AdminName", s0."StudentContactId", s0."AdmissionNumber", s0."Email", s0."Phone", s0."StudentId"
+FROM (
+    SELECT s."AdmissionNumber", s."CourseId", s."CreatedAt", s."CreatedBy", s."DateOfBirth", s."EnrollmentDate", s."FirstName", s."IsActive", s."IsValid", s."LastName", s."StudentId", c."CourseId" AS "CourseId0", c."CourseFee", c."CourseName", a."AdminId", a."AdminName"
+    FROM "Students" AS s
+    INNER JOIN "Courses" AS c ON s."CourseId" = c."CourseId"
+    INNER JOIN "Admins" AS a ON s."CreatedBy" = a."AdminId"
+    WHERE s."AdmissionNumber" = @__admissionNumber_0
+    LIMIT 1
+) AS t
+LEFT JOIN "StudentContacts" AS s0 ON t."AdmissionNumber" = s0."AdmissionNumber"
+ORDER BY t."AdmissionNumber", t."CourseId0", t."AdminId"
+2026-02-04 12:37:35.909 +03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'XYZUniversityAPI.Infrastructure.Data.AppDbContext'.
+Npgsql.PostgresException (0x80004005): 42703: column s0.StudentId does not exist
+
+POSITION: 324
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42703
+    MessageText: column s0.StudentId does not exist
+    Hint: Perhaps you meant to reference the column "t.StudentId".
+    Position: 324
+    File: parse_relation.c
+    Line: 3838
+    Routine: errorMissingColumn
+Npgsql.PostgresException (0x80004005): 42703: column s0.StudentId does not exist
+
+POSITION: 324
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42703
+    MessageText: column s0.StudentId does not exist
+    Hint: Perhaps you meant to reference the column "t.StudentId".
+    Position: 324
+    File: parse_relation.c
+    Line: 3838
+    Routine: errorMissingColumn
+2026-02-04 12:37:36.100 +03:00 [ERR] An unhandled exception occurred.
+Npgsql.PostgresException (0x80004005): 42703: column s0.StudentId does not exist
+
+POSITION: 324
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at XYZUniversityAPI.Infrastructure.Repositories.StudentRepository.GetStudentByAdmissionNumberAsync(String admissionNumber) in C:\Users\Admin\Desktop\Xyz_Challenge\XYZUniversityAPI\Infrastrucure\Repository\StudentRepository.cs:line 28
+   at XYZUniversityAPI.Application.Services.StudentService.ValidateStudentAsync(String admissionNumber) in C:\Users\Admin\Desktop\Xyz_Challenge\XYZUniversityAPI\Application\Services\StudentService.cs:line 47
+   at XYZUniversityAPI.API.Controllers.StudentController.ValidateStudent(String admissionNumber) in C:\Users\Admin\Desktop\Xyz_Challenge\XYZUniversityAPI\API\Controllers\StudentController.cs:line 39
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at XYZUniversityAPI.Middleware.ExceptionMiddleware.InvokeAsync(HttpContext context) in C:\Users\Admin\Desktop\Xyz_Challenge\XYZUniversityAPI\API\Middleware\ExceptionMiddleware.cs:line 23
+  Exception data:
+    Severity: ERROR
+    SqlState: 42703
+    MessageText: column s0.StudentId does not exist
+    Hint: Perhaps you meant to reference the column "t.StudentId".
+    Position: 324
+    File: parse_relation.c
+    Line: 3838
+    Routine: errorMissingColumn
+2026-02-04 12:37:36.121 +03:00 [ERR] HTTP GET /api/student_validation/validate/CIT-007-2026 responded 500 in 305.8200 ms
+2026-02-04 12:37:52.524 +03:00 [ERR] Failed executing DbCommand (4ms) [Parameters=[@__admissionNumber_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT t."AdmissionNumber", t."CourseId", t."CreatedAt", t."CreatedBy", t."DateOfBirth", t."EnrollmentDate", t."FirstName", t."IsActive", t."IsValid", t."LastName", t."StudentId", t."CourseId0", t."CourseFee", t."CourseName", t."AdminId", t."AdminName", s0."StudentContactId", s0."AdmissionNumber", s0."Email", s0."Phone", s0."StudentId"
+FROM (
+    SELECT s."AdmissionNumber", s."CourseId", s."CreatedAt", s."CreatedBy", s."DateOfBirth", s."EnrollmentDate", s."FirstName", s."IsActive", s."IsValid", s."LastName", s."StudentId", c."CourseId" AS "CourseId0", c."CourseFee", c."CourseName", a."AdminId", a."AdminName"
+    FROM "Students" AS s
+    INNER JOIN "Courses" AS c ON s."CourseId" = c."CourseId"
+    INNER JOIN "Admins" AS a ON s."CreatedBy" = a."AdminId"
+    WHERE s."AdmissionNumber" = @__admissionNumber_0
+    LIMIT 1
+) AS t
+LEFT JOIN "StudentContacts" AS s0 ON t."AdmissionNumber" = s0."AdmissionNumber"
+ORDER BY t."AdmissionNumber", t."CourseId0", t."AdminId"
+2026-02-04 12:37:52.526 +03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'XYZUniversityAPI.Infrastructure.Data.AppDbContext'.
+Npgsql.PostgresException (0x80004005): 42703: column s0.StudentId does not exist
+
+POSITION: 324
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42703
+    MessageText: column s0.StudentId does not exist
+    Hint: Perhaps you meant to reference the column "t.StudentId".
+    Position: 324
+    File: parse_relation.c
+    Line: 3838
+    Routine: errorMissingColumn
+Npgsql.PostgresException (0x80004005): 42703: column s0.StudentId does not exist
+
+POSITION: 324
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42703
+    MessageText: column s0.StudentId does not exist
+    Hint: Perhaps you meant to reference the column "t.StudentId".
+    Position: 324
+    File: parse_relation.c
+    Line: 3838
+    Routine: errorMissingColumn
+2026-02-04 12:37:52.637 +03:00 [ERR] An unhandled exception occurred.
+Npgsql.PostgresException (0x80004005): 42703: column s0.StudentId does not exist
+
+POSITION: 324
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at XYZUniversityAPI.Infrastructure.Repositories.StudentRepository.GetStudentByAdmissionNumberAsync(String admissionNumber) in C:\Users\Admin\Desktop\Xyz_Challenge\XYZUniversityAPI\Infrastrucure\Repository\StudentRepository.cs:line 28
+   at XYZUniversityAPI.Application.Services.StudentService.ValidateStudentAsync(String admissionNumber) in C:\Users\Admin\Desktop\Xyz_Challenge\XYZUniversityAPI\Application\Services\StudentService.cs:line 47
+   at XYZUniversityAPI.API.Controllers.StudentController.ValidateStudent(String admissionNumber) in C:\Users\Admin\Desktop\Xyz_Challenge\XYZUniversityAPI\API\Controllers\StudentController.cs:line 39
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at XYZUniversityAPI.Middleware.ExceptionMiddleware.InvokeAsync(HttpContext context) in C:\Users\Admin\Desktop\Xyz_Challenge\XYZUniversityAPI\API\Middleware\ExceptionMiddleware.cs:line 23
+  Exception data:
+    Severity: ERROR
+    SqlState: 42703
+    MessageText: column s0.StudentId does not exist
+    Hint: Perhaps you meant to reference the column "t.StudentId".
+    Position: 324
+    File: parse_relation.c
+    Line: 3838
+    Routine: errorMissingColumn
+2026-02-04 12:37:52.642 +03:00 [ERR] HTTP GET /api/student_validation/validate/CIT-005-2026 responded 500 in 131.8286 ms
+2026-02-04 12:38:03.294 +03:00 [ERR] Failed executing DbCommand (4ms) [Parameters=[@__admissionNumber_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT t."AdmissionNumber", t."CourseId", t."CreatedAt", t."CreatedBy", t."DateOfBirth", t."EnrollmentDate", t."FirstName", t."IsActive", t."IsValid", t."LastName", t."StudentId", t."CourseId0", t."CourseFee", t."CourseName", t."AdminId", t."AdminName", s0."StudentContactId", s0."AdmissionNumber", s0."Email", s0."Phone", s0."StudentId"
+FROM (
+    SELECT s."AdmissionNumber", s."CourseId", s."CreatedAt", s."CreatedBy", s."DateOfBirth", s."EnrollmentDate", s."FirstName", s."IsActive", s."IsValid", s."LastName", s."StudentId", c."CourseId" AS "CourseId0", c."CourseFee", c."CourseName", a."AdminId", a."AdminName"
+    FROM "Students" AS s
+    INNER JOIN "Courses" AS c ON s."CourseId" = c."CourseId"
+    INNER JOIN "Admins" AS a ON s."CreatedBy" = a."AdminId"
+    WHERE s."AdmissionNumber" = @__admissionNumber_0
+    LIMIT 1
+) AS t
+LEFT JOIN "StudentContacts" AS s0 ON t."AdmissionNumber" = s0."AdmissionNumber"
+ORDER BY t."AdmissionNumber", t."CourseId0", t."AdminId"
+2026-02-04 12:38:03.296 +03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'XYZUniversityAPI.Infrastructure.Data.AppDbContext'.
+Npgsql.PostgresException (0x80004005): 42703: column s0.StudentId does not exist
+
+POSITION: 324
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42703
+    MessageText: column s0.StudentId does not exist
+    Hint: Perhaps you meant to reference the column "t.StudentId".
+    Position: 324
+    File: parse_relation.c
+    Line: 3838
+    Routine: errorMissingColumn
+Npgsql.PostgresException (0x80004005): 42703: column s0.StudentId does not exist
+
+POSITION: 324
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42703
+    MessageText: column s0.StudentId does not exist
+    Hint: Perhaps you meant to reference the column "t.StudentId".
+    Position: 324
+    File: parse_relation.c
+    Line: 3838
+    Routine: errorMissingColumn
+2026-02-04 12:38:03.444 +03:00 [ERR] An unhandled exception occurred.
+Npgsql.PostgresException (0x80004005): 42703: column s0.StudentId does not exist
+
+POSITION: 324
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at XYZUniversityAPI.Infrastructure.Repositories.StudentRepository.GetStudentByAdmissionNumberAsync(String admissionNumber) in C:\Users\Admin\Desktop\Xyz_Challenge\XYZUniversityAPI\Infrastrucure\Repository\StudentRepository.cs:line 28
+   at XYZUniversityAPI.Application.Services.StudentService.ValidateStudentAsync(String admissionNumber) in C:\Users\Admin\Desktop\Xyz_Challenge\XYZUniversityAPI\Application\Services\StudentService.cs:line 47
+   at XYZUniversityAPI.API.Controllers.StudentController.ValidateStudent(String admissionNumber) in C:\Users\Admin\Desktop\Xyz_Challenge\XYZUniversityAPI\API\Controllers\StudentController.cs:line 39
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at XYZUniversityAPI.Middleware.ExceptionMiddleware.InvokeAsync(HttpContext context) in C:\Users\Admin\Desktop\Xyz_Challenge\XYZUniversityAPI\API\Middleware\ExceptionMiddleware.cs:line 23
+  Exception data:
+    Severity: ERROR
+    SqlState: 42703
+    MessageText: column s0.StudentId does not exist
+    Hint: Perhaps you meant to reference the column "t.StudentId".
+    Position: 324
+    File: parse_relation.c
+    Line: 3838
+    Routine: errorMissingColumn
+2026-02-04 12:38:03.449 +03:00 [ERR] HTTP GET /api/student_validation/validate/CIT-005-2026 responded 500 in 160.8945 ms
+2026-02-04 12:38:09.824 +03:00 [INF] HTTP GET /api/dashboard/live-payments responded 401 in 0.3525 ms
+2026-02-04 12:38:16.007 +03:00 [INF] HTTP GET /api/dashboard/live-payments responded 200 in 38.9091 ms
+2026-02-04 12:38:31.707 +03:00 [ERR] Failed executing DbCommand (4ms) [Parameters=[@__admissionNumber_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT t."AdmissionNumber", t."CourseId", t."CreatedAt", t."CreatedBy", t."DateOfBirth", t."EnrollmentDate", t."FirstName", t."IsActive", t."IsValid", t."LastName", t."StudentId", t."CourseId0", t."CourseFee", t."CourseName", t."AdminId", t."AdminName", s0."StudentContactId", s0."AdmissionNumber", s0."Email", s0."Phone", s0."StudentId"
+FROM (
+    SELECT s."AdmissionNumber", s."CourseId", s."CreatedAt", s."CreatedBy", s."DateOfBirth", s."EnrollmentDate", s."FirstName", s."IsActive", s."IsValid", s."LastName", s."StudentId", c."CourseId" AS "CourseId0", c."CourseFee", c."CourseName", a."AdminId", a."AdminName"
+    FROM "Students" AS s
+    INNER JOIN "Courses" AS c ON s."CourseId" = c."CourseId"
+    INNER JOIN "Admins" AS a ON s."CreatedBy" = a."AdminId"
+    WHERE s."AdmissionNumber" = @__admissionNumber_0
+    LIMIT 1
+) AS t
+LEFT JOIN "StudentContacts" AS s0 ON t."AdmissionNumber" = s0."AdmissionNumber"
+ORDER BY t."AdmissionNumber", t."CourseId0", t."AdminId"
+2026-02-04 12:38:31.709 +03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'XYZUniversityAPI.Infrastructure.Data.AppDbContext'.
+Npgsql.PostgresException (0x80004005): 42703: column s0.StudentId does not exist
+
+POSITION: 324
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42703
+    MessageText: column s0.StudentId does not exist
+    Hint: Perhaps you meant to reference the column "t.StudentId".
+    Position: 324
+    File: parse_relation.c
+    Line: 3838
+    Routine: errorMissingColumn
+Npgsql.PostgresException (0x80004005): 42703: column s0.StudentId does not exist
+
+POSITION: 324
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42703
+    MessageText: column s0.StudentId does not exist
+    Hint: Perhaps you meant to reference the column "t.StudentId".
+    Position: 324
+    File: parse_relation.c
+    Line: 3838
+    Routine: errorMissingColumn
+2026-02-04 12:38:31.818 +03:00 [ERR] An unhandled exception occurred.
+Npgsql.PostgresException (0x80004005): 42703: column s0.StudentId does not exist
+
+POSITION: 324
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at XYZUniversityAPI.Infrastructure.Repositories.StudentRepository.GetStudentByAdmissionNumberAsync(String admissionNumber) in C:\Users\Admin\Desktop\Xyz_Challenge\XYZUniversityAPI\Infrastrucure\Repository\StudentRepository.cs:line 28
+   at XYZUniversityAPI.Application.Services.StudentService.ValidateStudentAsync(String admissionNumber) in C:\Users\Admin\Desktop\Xyz_Challenge\XYZUniversityAPI\Application\Services\StudentService.cs:line 47
+   at XYZUniversityAPI.API.Controllers.StudentController.ValidateStudent(String admissionNumber) in C:\Users\Admin\Desktop\Xyz_Challenge\XYZUniversityAPI\API\Controllers\StudentController.cs:line 39
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at XYZUniversityAPI.Middleware.ExceptionMiddleware.InvokeAsync(HttpContext context) in C:\Users\Admin\Desktop\Xyz_Challenge\XYZUniversityAPI\API\Middleware\ExceptionMiddleware.cs:line 23
+  Exception data:
+    Severity: ERROR
+    SqlState: 42703
+    MessageText: column s0.StudentId does not exist
+    Hint: Perhaps you meant to reference the column "t.StudentId".
+    Position: 324
+    File: parse_relation.c
+    Line: 3838
+    Routine: errorMissingColumn
+2026-02-04 12:38:31.823 +03:00 [ERR] HTTP GET /api/student_validation/validate/CIT-001-2026 responded 500 in 121.5339 ms
+2026-02-04 12:38:43.689 +03:00 [ERR] Failed executing DbCommand (4ms) [Parameters=[@__admissionNumber_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT t."AdmissionNumber", t."CourseId", t."CreatedAt", t."CreatedBy", t."DateOfBirth", t."EnrollmentDate", t."FirstName", t."IsActive", t."IsValid", t."LastName", t."StudentId", t."CourseId0", t."CourseFee", t."CourseName", t."AdminId", t."AdminName", s0."StudentContactId", s0."AdmissionNumber", s0."Email", s0."Phone", s0."StudentId"
+FROM (
+    SELECT s."AdmissionNumber", s."CourseId", s."CreatedAt", s."CreatedBy", s."DateOfBirth", s."EnrollmentDate", s."FirstName", s."IsActive", s."IsValid", s."LastName", s."StudentId", c."CourseId" AS "CourseId0", c."CourseFee", c."CourseName", a."AdminId", a."AdminName"
+    FROM "Students" AS s
+    INNER JOIN "Courses" AS c ON s."CourseId" = c."CourseId"
+    INNER JOIN "Admins" AS a ON s."CreatedBy" = a."AdminId"
+    WHERE s."AdmissionNumber" = @__admissionNumber_0
+    LIMIT 1
+) AS t
+LEFT JOIN "StudentContacts" AS s0 ON t."AdmissionNumber" = s0."AdmissionNumber"
+ORDER BY t."AdmissionNumber", t."CourseId0", t."AdminId"
+2026-02-04 12:38:43.691 +03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'XYZUniversityAPI.Infrastructure.Data.AppDbContext'.
+Npgsql.PostgresException (0x80004005): 42703: column s0.StudentId does not exist
+
+POSITION: 324
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42703
+    MessageText: column s0.StudentId does not exist
+    Hint: Perhaps you meant to reference the column "t.StudentId".
+    Position: 324
+    File: parse_relation.c
+    Line: 3838
+    Routine: errorMissingColumn
+Npgsql.PostgresException (0x80004005): 42703: column s0.StudentId does not exist
+
+POSITION: 324
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42703
+    MessageText: column s0.StudentId does not exist
+    Hint: Perhaps you meant to reference the column "t.StudentId".
+    Position: 324
+    File: parse_relation.c
+    Line: 3838
+    Routine: errorMissingColumn
+2026-02-04 12:38:43.797 +03:00 [ERR] An unhandled exception occurred.
+Npgsql.PostgresException (0x80004005): 42703: column s0.StudentId does not exist
+
+POSITION: 324
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync[TSource](IAsyncEnumerable`1 asyncEnumerable, CancellationToken cancellationToken)
+   at XYZUniversityAPI.Infrastructure.Repositories.StudentRepository.GetStudentByAdmissionNumberAsync(String admissionNumber) in C:\Users\Admin\Desktop\Xyz_Challenge\XYZUniversityAPI\Infrastrucure\Repository\StudentRepository.cs:line 28
+   at XYZUniversityAPI.Application.Services.StudentService.ValidateStudentAsync(String admissionNumber) in C:\Users\Admin\Desktop\Xyz_Challenge\XYZUniversityAPI\Application\Services\StudentService.cs:line 47
+   at XYZUniversityAPI.API.Controllers.StudentController.ValidateStudent(String admissionNumber) in C:\Users\Admin\Desktop\Xyz_Challenge\XYZUniversityAPI\API\Controllers\StudentController.cs:line 39
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at XYZUniversityAPI.Middleware.ExceptionMiddleware.InvokeAsync(HttpContext context) in C:\Users\Admin\Desktop\Xyz_Challenge\XYZUniversityAPI\API\Middleware\ExceptionMiddleware.cs:line 23
+  Exception data:
+    Severity: ERROR
+    SqlState: 42703
+    MessageText: column s0.StudentId does not exist
+    Hint: Perhaps you meant to reference the column "t.StudentId".
+    Position: 324
+    File: parse_relation.c
+    Line: 3838
+    Routine: errorMissingColumn
+2026-02-04 12:38:43.801 +03:00 [ERR] HTTP GET /api/student_validation/validate/CIT-001-2026 responded 500 in 117.1287 ms
+2026-02-04 12:45:14.276 +03:00 [INF] Background worker initializing...
+2026-02-04 12:45:14.426 +03:00 [INF] Listening for RabbitMQ messages on payments
+2026-02-04 12:45:18.807 +03:00 [INF] HTTP POST /api/auth/login responded 200 in 332.1949 ms
+2026-02-04 12:45:35.660 +03:00 [INF] HTTP GET /api/student_validation/validate/CIT-001-2026 responded 200 in 2278.7822 ms
+2026-02-04 12:46:15.178 +03:00 [INF] HTTP POST /api/Payments responded 401 in 5.1361 ms
+2026-02-04 12:46:22.292 +03:00 [INF] Processing new payment intent for CIT-007-2026
+2026-02-04 12:46:22.423 +03:00 [INF] HTTP POST /api/Payments responded 202 in 158.9001 ms
+2026-02-04 12:46:25.349 +03:00 [WRN] Duplicate payment attempt blocked for CIT-007-2026
+2026-02-04 12:46:25.351 +03:00 [INF] HTTP POST /api/Payments responded 409 in 7.3353 ms
+2026-02-04 12:46:25.445 +03:00 [INF] Simulator loopback initiated for XYZ-FC2C666591
+2026-02-04 12:46:25.515 +03:00 [INF] Webhook hit for Reference: XYZ-FC2C666591
+2026-02-04 12:46:25.537 +03:00 [INF] Payment XYZ-FC2C666591 updated to "SUCCESS"
+2026-02-04 12:46:25.559 +03:00 [INF] HTTP POST /api/bank/webhook responded 200 in 60.2205 ms
+2026-02-04 12:46:25.562 +03:00 [INF] Message received from RabbitMQ.
+2026-02-04 12:46:25.566 +03:00 [INF] [SIMULATOR SUCCESS] Webhook hit for XYZ-FC2C666591
+2026-02-04 12:46:25.568 +03:00 [INF] Redis cache updated for CIT-007-2026
+2026-02-04 12:46:25.568 +03:00 [INF] SignalR update pushed to student: CIT-007-2026
+2026-02-04 12:46:27.560 +03:00 [WRN] Duplicate payment attempt blocked for CIT-007-2026
+2026-02-04 12:46:27.560 +03:00 [INF] HTTP POST /api/Payments responded 409 in 4.5562 ms
+2026-02-04 12:46:29.272 +03:00 [WRN] Duplicate payment attempt blocked for CIT-007-2026
+2026-02-04 12:46:29.272 +03:00 [INF] HTTP POST /api/Payments responded 409 in 3.4483 ms
+2026-02-04 12:46:30.802 +03:00 [WRN] Duplicate payment attempt blocked for CIT-007-2026
+2026-02-04 12:46:30.803 +03:00 [INF] HTTP POST /api/Payments responded 409 in 3.0496 ms
+2026-02-04 12:46:32.308 +03:00 [WRN] Duplicate payment attempt blocked for CIT-007-2026
+2026-02-04 12:46:32.309 +03:00 [INF] HTTP POST /api/Payments responded 409 in 3.7936 ms
+2026-02-04 12:46:54.491 +03:00 [INF] HTTP GET /api/dashboard/live-payments responded 401 in 0.9222 ms
+2026-02-04 12:46:59.353 +03:00 [INF] HTTP GET /api/dashboard/live-payments responded 200 in 18.5076 ms
+2026-02-04 12:47:10.686 +03:00 [INF] HTTP GET /swagger/index.html responded 200 in 64.7807 ms
+2026-02-04 12:47:10.832 +03:00 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 72.4683 ms
+2026-02-04 12:49:32.015 +03:00 [INF] HTTP POST /api/Auth/login responded 200 in 67.0522 ms
+2026-02-04 12:50:08.559 +03:00 [INF] HTTP GET /api/Payments/payment-latest-status responded 200 in 17.3436 ms
+2026-02-04 12:55:30.131 +03:00 [INF] HTTP GET /api/student_validation/validate/CIT-006-2026 responded 400 in 212.4766 ms
+2026-02-04 12:56:11.540 +03:00 [INF] HTTP GET /api/student_validation/validate/CIT-004-2026 responded 200 in 26.8931 ms
+2026-02-04 12:57:02.021 +03:00 [INF] Processing new payment intent for CIT-002-2026
+2026-02-04 12:57:02.029 +03:00 [INF] HTTP POST /api/Payments responded 202 in 20.7268 ms
+2026-02-04 12:57:05.031 +03:00 [INF] Simulator loopback initiated for XYZ-372CF9AE32
+2026-02-04 12:57:05.048 +03:00 [INF] Webhook hit for Reference: XYZ-372CF9AE32
+2026-02-04 12:57:05.057 +03:00 [INF] Payment XYZ-372CF9AE32 updated to "SUCCESS"
+2026-02-04 12:57:05.064 +03:00 [INF] Message received from RabbitMQ.
+2026-02-04 12:57:05.068 +03:00 [INF] Redis cache updated for CIT-002-2026
+2026-02-04 12:57:05.069 +03:00 [INF] SignalR update pushed to student: CIT-002-2026
+2026-02-04 12:57:05.069 +03:00 [INF] HTTP POST /api/bank/webhook responded 200 in 29.1208 ms
+2026-02-04 12:57:05.070 +03:00 [INF] [SIMULATOR SUCCESS] Webhook hit for XYZ-372CF9AE32
+2026-02-04 12:57:06.982 +03:00 [WRN] Duplicate payment attempt blocked for CIT-002-2026
+2026-02-04 12:57:06.982 +03:00 [INF] HTTP POST /api/Payments responded 409 in 3.9549 ms
+2026-02-04 12:57:22.973 +03:00 [INF] HTTP GET /api/Payments/payment-latest-status responded 200 in 8.5445 ms
+2026-02-04 14:11:03.645 +03:00 [INF] Background worker initializing...
+2026-02-04 14:11:03.971 +03:00 [INF] Listening for RabbitMQ messages on payments
+2026-02-04 14:11:59.747 +03:00 [INF] HTTP POST /api/Auth/login responded 200 in 1047.0839 ms
+2026-02-04 14:12:46.682 +03:00 [INF] Processing new payment intent for CIT-003-2026
+2026-02-04 14:12:47.224 +03:00 [INF] HTTP POST /api/Payments responded 202 in 1222.9833 ms
+2026-02-04 14:12:50.236 +03:00 [INF] Simulator loopback initiated for XYZ-7C746A5E10
+2026-02-04 14:12:50.425 +03:00 [INF] Webhook hit for Reference: XYZ-7C746A5E10
+2026-02-04 14:12:50.515 +03:00 [INF] Payment XYZ-7C746A5E10 updated to "SUCCESS"
+2026-02-04 14:12:50.609 +03:00 [INF] Message received from RabbitMQ.
+2026-02-04 14:12:50.629 +03:00 [INF] Redis cache updated for CIT-003-2026
+2026-02-04 14:12:50.631 +03:00 [INF] SignalR update pushed to student: CIT-003-2026
+2026-02-04 14:12:50.669 +03:00 [INF] HTTP POST /api/bank/webhook responded 200 in 292.4315 ms
+2026-02-04 14:12:50.682 +03:00 [INF] [SIMULATOR SUCCESS] Webhook hit for XYZ-7C746A5E10
+2026-02-04 14:12:51.035 +03:00 [WRN] Duplicate payment attempt blocked for CIT-003-2026
+2026-02-04 14:12:51.058 +03:00 [INF] HTTP POST /api/Payments responded 409 in 41.9197 ms
+2026-02-04 14:12:58.501 +03:00 [INF] Processing new payment intent for CIT-003-2026
+2026-02-04 14:12:58.571 +03:00 [INF] HTTP POST /api/Payments responded 202 in 88.7725 ms
+2026-02-04 14:13:01.576 +03:00 [INF] Simulator loopback initiated for XYZ-78E54A79EB
+2026-02-04 14:13:01.584 +03:00 [INF] Webhook hit for Reference: XYZ-78E54A79EB
+2026-02-04 14:13:01.599 +03:00 [INF] Payment XYZ-78E54A79EB updated to "SUCCESS"
+2026-02-04 14:13:01.621 +03:00 [INF] Message received from RabbitMQ.
+2026-02-04 14:13:01.623 +03:00 [INF] Redis cache updated for CIT-003-2026
+2026-02-04 14:13:01.623 +03:00 [INF] SignalR update pushed to student: CIT-003-2026
+2026-02-04 14:13:01.626 +03:00 [INF] HTTP POST /api/bank/webhook responded 200 in 45.5105 ms
+2026-02-04 14:13:01.628 +03:00 [INF] [SIMULATOR SUCCESS] Webhook hit for XYZ-78E54A79EB
+2026-02-04 14:13:03.174 +03:00 [WRN] Duplicate payment attempt blocked for CIT-003-2026
+2026-02-04 14:13:03.175 +03:00 [INF] HTTP POST /api/Payments responded 409 in 3.6877 ms
+2026-02-04 14:13:17.687 +03:00 [INF] HTTP GET /api/Payments/payment-latest-status responded 200 in 88.6691 ms
+2026-02-04 14:13:21.912 +03:00 [INF] HTTP GET /api/Payments/payment-latest-status responded 200 in 7.1931 ms
+2026-02-04 14:13:23.148 +03:00 [INF] HTTP GET /api/Payments/payment-latest-status responded 200 in 7.7988 ms
+2026-02-04 15:16:22.713 +03:00 [INF] HTTP GET /swagger/index.html responded 200 in 40.8338 ms
+2026-02-04 15:16:22.821 +03:00 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 50.4592 ms
+2026-02-04 15:17:56.382 +03:00 [INF] HTTP POST /api/Auth/login responded 200 in 206.8038 ms
+2026-02-04 15:19:15.909 +03:00 [INF] HTTP GET /api/Payments/types responded 200 in 18.7057 ms
+2026-02-04 15:19:32.361 +03:00 [INF] HTTP GET /api/Payments/channels responded 200 in 13.7993 ms
+2026-02-04 15:20:32.753 +03:00 [INF] Processing new payment intent for CIT-001-2026
+2026-02-04 15:20:32.762 +03:00 [INF] HTTP POST /api/Payments responded 202 in 29.0013 ms
+2026-02-04 15:20:35.769 +03:00 [INF] Simulator loopback initiated for XYZ-CA82F740D2
+2026-02-04 15:20:35.778 +03:00 [INF] Webhook hit for Reference: XYZ-CA82F740D2
+2026-02-04 15:20:35.783 +03:00 [INF] Payment XYZ-CA82F740D2 updated to "SUCCESS"
+2026-02-04 15:20:35.790 +03:00 [INF] Message received from RabbitMQ.
+2026-02-04 15:20:35.791 +03:00 [INF] HTTP POST /api/bank/webhook responded 200 in 13.7900 ms
+2026-02-04 15:20:35.791 +03:00 [INF] Redis cache updated for CIT-001-2026
+2026-02-04 15:20:35.791 +03:00 [INF] [SIMULATOR SUCCESS] Webhook hit for XYZ-CA82F740D2
+2026-02-04 15:20:35.791 +03:00 [INF] SignalR update pushed to student: CIT-001-2026
+2026-02-04 15:21:08.449 +03:00 [WRN] Duplicate payment attempt blocked for CIT-001-2026
+2026-02-04 15:21:08.449 +03:00 [INF] HTTP POST /api/Payments responded 409 in 1.5977 ms
+2026-02-04 15:22:17.322 +03:00 [WRN] Duplicate payment attempt blocked for CIT-001-2026
+2026-02-04 15:22:17.323 +03:00 [INF] HTTP POST /api/Payments responded 409 in 1.4215 ms
+2026-02-04 15:22:33.474 +03:00 [INF] Processing new payment intent for CIT-001-2026
+2026-02-04 15:22:33.478 +03:00 [INF] HTTP POST /api/Payments responded 202 in 8.1885 ms
+2026-02-04 15:22:36.488 +03:00 [INF] Simulator loopback initiated for XYZ-7E4EF81EE8
+2026-02-04 15:22:36.493 +03:00 [INF] Webhook hit for Reference: XYZ-7E4EF81EE8
+2026-02-04 15:22:36.503 +03:00 [INF] Payment XYZ-7E4EF81EE8 updated to "SUCCESS"
+2026-02-04 15:22:36.520 +03:00 [INF] HTTP POST /api/bank/webhook responded 200 in 27.8378 ms
+2026-02-04 15:22:36.520 +03:00 [INF] [SIMULATOR SUCCESS] Webhook hit for XYZ-7E4EF81EE8
+2026-02-04 15:22:36.520 +03:00 [INF] Message received from RabbitMQ.
+2026-02-04 15:22:36.521 +03:00 [INF] Redis cache updated for CIT-001-2026
+2026-02-04 15:22:36.521 +03:00 [INF] SignalR update pushed to student: CIT-001-2026
+2026-02-04 15:27:00.188 +03:00 [INF] HTTP GET /api/Payments/payment-latest-status responded 200 in 2.5350 ms
+2026-02-04 15:28:50.018 +03:00 [INF] HTTP GET /api/student_validation/validate/CIT-001-2026 responded 200 in 2128.7884 ms
+2026-02-04 15:30:28.202 +03:00 [INF] HTTP POST /api/auth/login responded 200 in 74.2062 ms
+2026-02-04 15:30:46.794 +03:00 [INF] Querying DB for all payments of CIT-001-2026
+2026-02-04 15:30:46.808 +03:00 [INF] HTTP GET /api/Payments/All_Payments responded 200 in 22.5528 ms
+2026-02-04 15:31:32.318 +03:00 [INF] HTTP GET /api/dashboard/live-payments responded 200 in 9.0544 ms
+2026-02-04 16:14:27.172 +03:00 [INF] Processing new payment intent for CIT-002-2026
+2026-02-04 16:14:27.179 +03:00 [INF] HTTP POST /api/Payments responded 202 in 151.3065 ms
+2026-02-04 16:14:30.182 +03:00 [INF] Simulator loopback initiated for XYZ-3129FA1BEB
+2026-02-04 16:14:30.187 +03:00 [INF] Webhook hit for Reference: XYZ-3129FA1BEB
+2026-02-04 16:14:30.196 +03:00 [INF] Payment XYZ-3129FA1BEB updated to "SUCCESS"
+2026-02-04 16:14:30.205 +03:00 [INF] HTTP POST /api/bank/webhook responded 200 in 19.4239 ms
+2026-02-04 16:14:30.205 +03:00 [INF] [SIMULATOR SUCCESS] Webhook hit for XYZ-3129FA1BEB
+2026-02-04 16:14:30.206 +03:00 [INF] Message received from RabbitMQ.
+2026-02-04 16:14:30.206 +03:00 [INF] Redis cache updated for CIT-002-2026
+2026-02-04 16:14:30.206 +03:00 [INF] SignalR update pushed to student: CIT-002-2026
+2026-02-04 16:14:35.974 +03:00 [WRN] Duplicate payment attempt blocked for CIT-002-2026
+2026-02-04 16:14:35.974 +03:00 [INF] HTTP POST /api/Payments responded 409 in 1.4230 ms
+2026-02-04 16:15:07.635 +03:00 [INF] Processing new payment intent for CIT-002-2026
+2026-02-04 16:15:07.639 +03:00 [INF] HTTP POST /api/Payments responded 202 in 6.6966 ms
+2026-02-04 16:15:10.649 +03:00 [INF] Simulator loopback initiated for XYZ-ED10960BAD
+2026-02-04 16:15:10.651 +03:00 [INF] Webhook hit for Reference: XYZ-ED10960BAD
+2026-02-04 16:15:10.658 +03:00 [INF] Payment XYZ-ED10960BAD updated to "SUCCESS"
+2026-02-04 16:15:10.668 +03:00 [INF] Message received from RabbitMQ.
+2026-02-04 16:15:10.668 +03:00 [INF] HTTP POST /api/bank/webhook responded 200 in 17.6778 ms
+2026-02-04 16:15:10.668 +03:00 [INF] Redis cache updated for CIT-002-2026
+2026-02-04 16:15:10.669 +03:00 [INF] [SIMULATOR SUCCESS] Webhook hit for XYZ-ED10960BAD
+2026-02-04 16:15:10.669 +03:00 [INF] SignalR update pushed to student: CIT-002-2026
+2026-02-04 16:47:54.653 +03:00 [INF] HTTP GET /api/Payments/payment-latest-status responded 401 in 2.8922 ms
+2026-02-04 16:48:01.615 +03:00 [INF] HTTP POST /api/Auth/login responded 200 in 87.7486 ms
+2026-02-04 16:48:24.948 +03:00 [INF] HTTP GET /api/Payments/payment-latest-status responded 200 in 8.2334 ms

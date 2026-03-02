@@ -1,0 +1,208 @@
+{
+  "vertices": {
+    "Student": {
+      "x": 0,
+      "y": 396,
+      "width": 280,
+      "height": 296
+    },
+    "Payment": {
+      "x": 330,
+      "y": 0,
+      "width": 280,
+      "height": 296
+    },
+    "Client": {
+      "x": 1000,
+      "y": 0,
+      "width": 280,
+      "height": 201
+    },
+    "StudentContact": {
+      "x": 660,
+      "y": 792,
+      "width": 280,
+      "height": 125
+    },
+    "Admin": {
+      "x": 0,
+      "y": 804.5,
+      "width": 280,
+      "height": 100
+    },
+    "Course": {
+      "x": 330,
+      "y": 801.5,
+      "width": 280,
+      "height": 106
+    },
+    "PaymentChannel": {
+      "x": 660,
+      "y": 494,
+      "width": 280,
+      "height": 100
+    },
+    "PaymentType": {
+      "x": 330,
+      "y": 460,
+      "width": 280,
+      "height": 134
+    }
+  },
+  "edges": [
+    {
+      "source": "Student",
+      "target": "Admin",
+      "points": [
+        {
+          "x": 27.5,
+          "y": 704
+        },
+        {
+          "x": 72.5,
+          "y": 780
+        }
+      ]
+    },
+    {
+      "source": "Student",
+      "target": "Course",
+      "points": [
+        {
+          "x": 117.5,
+          "y": 706
+        },
+        {
+          "x": 402.5,
+          "y": 780
+        }
+      ]
+    },
+    {
+      "source": "Student",
+      "target": "StudentContact",
+      "points": [
+        {
+          "x": 207.5,
+          "y": 708
+        },
+        {
+          "x": 732.5,
+          "y": 780
+        }
+      ]
+    },
+    {
+      "source": "Payment",
+      "target": "Student",
+      "points": [
+        {
+          "x": 362,
+          "y": 308
+        },
+        {
+          "x": 140,
+          "y": 384
+        }
+      ]
+    },
+    {
+      "source": "Payment",
+      "target": "PaymentType",
+      "points": [
+        {
+          "x": 416,
+          "y": 310
+        },
+        {
+          "x": 402.5,
+          "y": 384
+        }
+      ]
+    },
+    {
+      "source": "Payment",
+      "target": "PaymentChannel",
+      "points": [
+        {
+          "x": 524,
+          "y": 312
+        },
+        {
+          "x": 732.5,
+          "y": 384
+        }
+      ]
+    },
+    {
+      "source": "StudentContact",
+      "target": "Student",
+      "points": [
+        {
+          "x": 867.5,
+          "y": 780
+        },
+        {
+          "x": 252.5,
+          "y": 708
+        }
+      ]
+    },
+    {
+      "source": "Admin",
+      "target": "Student",
+      "points": [
+        {
+          "x": 207.5,
+          "y": 780
+        },
+        {
+          "x": 72.5,
+          "y": 704
+        }
+      ]
+    },
+    {
+      "source": "Course",
+      "target": "Student",
+      "points": [
+        {
+          "x": 537.5,
+          "y": 780
+        },
+        {
+          "x": 162.5,
+          "y": 706
+        }
+      ]
+    },
+    {
+      "source": "PaymentChannel",
+      "target": "Payment",
+      "points": [
+        {
+          "x": 867.5,
+          "y": 384
+        },
+        {
+          "x": 578,
+          "y": 312
+        }
+      ]
+    },
+    {
+      "source": "PaymentType",
+      "target": "Payment",
+      "points": [
+        {
+          "x": 537.5,
+          "y": 384
+        },
+        {
+          "x": 470,
+          "y": 310
+        }
+      ]
+    }
+  ]
+}

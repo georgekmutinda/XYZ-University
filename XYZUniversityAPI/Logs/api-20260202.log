@@ -1,0 +1,6 @@
+2026-02-02 18:55:17.353 +03:00 [INF] Background worker initializing...
+2026-02-02 18:55:17.673 +03:00 [INF] Listening for RabbitMQ messages on payments
+2026-02-02 18:55:23.096 +03:00 [INF] HTTP GET /swagger/index.html responded 200 in 277.7693 ms
+2026-02-02 18:55:23.406 +03:00 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 229.2644 ms
+2026-02-02 18:56:35.618 +03:00 [INF] HTTP POST /api/Payments responded 401 in 177.0125 ms
+2026-02-02 18:56:42.263 +03:00 [INF] HTTP POST /api/Auth/login responded 200 in 710.3401 ms
