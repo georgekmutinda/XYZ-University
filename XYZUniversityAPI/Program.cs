@@ -16,7 +16,6 @@ using StackExchange.Redis;
 using XYZUniversityAPI.BackgroundServices; 
 using RabbitMQ.Client;
 using Serilog;
-// Added for SignalR
 using Microsoft.AspNetCore.SignalR;
 using XYZUniversityAPI.Infrastructure.Hubs; 
 
@@ -36,12 +35,8 @@ try
         .Enrich.FromLogContext());
 
     #region JWT SETTINGS
-    builder.Services.Configure<JwtSettings>(
-        builder.Configuration.GetSection("JwtSettings")
-    );
-    var jwtSettings = builder.Configuration
-        .GetSection("JwtSettings")
-        .Get<JwtSettings>()!;
+    builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+    var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>()!;
     #endregion
 
     #region REDIS & CACHING
@@ -56,7 +51,7 @@ try
     });
     #endregion
 
-    #region SIGNALR (New for Real-time updates)
+    #region SIGNALR
     builder.Services.AddSignalR();
     #endregion
 
@@ -69,7 +64,7 @@ try
         Password = "guest"
     });
 
-    builder.Services.AddSingleton<XYZUniversityAPI.Application.Interfaces.IRabbitMqPublisher, XYZUniversityAPI.Infrastructure.Messaging.RabbitMqPublisher>();
+    builder.Services.AddSingleton<IRabbitMqPublisher, RabbitMqPublisher>();
     #endregion
 
     builder.Services.AddHttpClient();
@@ -87,25 +82,8 @@ try
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = jwtSettings.Issuer,
                 ValidAudience = jwtSettings.Audience,
-                IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(jwtSettings.SecretKey)
-                ),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
                 ClockSkew = TimeSpan.Zero
-            };
-
-            options.Events = new JwtBearerEvents
-            {
-                OnChallenge = context =>
-                {
-                    context.HandleResponse();
-                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                    context.Response.ContentType = "application/json";
-                    return context.Response.WriteAsJsonAsync(new
-                    {
-                        statusCode = 401,
-                        message = "Unauthorized access. Token is missing, invalid, or expired."
-                    });
-                }
             };
         });
 
@@ -125,7 +103,6 @@ try
     builder.Services.AddScoped<IStudentRepository, StudentRepository>();
     builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
     builder.Services.AddScoped<IClientRepository, ClientRepository>();
-
     builder.Services.AddScoped<IStudentService, StudentService>();
     builder.Services.AddScoped<IPaymentService, PaymentService>();
     builder.Services.AddScoped<ITokenService, TokenService>();
@@ -140,9 +117,7 @@ try
     builder.Services.AddCors(options =>
     {
         options.AddPolicy("AllowAll", policy =>
-            policy.AllowAnyOrigin()
-                  .AllowAnyMethod()
-                  .AllowAnyHeader());
+            policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
     });
     #endregion
 
@@ -157,18 +132,10 @@ try
             Type = SecuritySchemeType.Http,
             Scheme = "Bearer",
             BearerFormat = "JWT",
-            In = ParameterLocation.Header,
-            Description = "Enter: Bearer {token}"
+            In = ParameterLocation.Header
         });
-        c.AddSecurityRequirement(new OpenApiSecurityRequirement
-        {
-            {
-                new OpenApiSecurityScheme
-                {
-                    Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
-                },
-                Array.Empty<string>()
-            }
+        c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+            { new OpenApiSecurityScheme { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" } }, Array.Empty<string>() }
         });
     });
     #endregion
@@ -176,34 +143,40 @@ try
     var app = builder.Build();
 
     #region MIDDLEWARE PIPELINE
-
     app.UseSerilogRequestLogging(); 
-
     if (app.Environment.IsDevelopment())
     {
         app.UseSwagger();
         app.UseSwaggerUI();
     }
-
     app.UseMiddleware<TokenExpiryMiddleware>();
     app.UseMiddleware<ExceptionMiddleware>();
     app.UseCors("AllowAll");
     app.UseAuthentication();
     app.UseAuthorization();
-    
     app.MapControllers();
-
-    // Mapping SignalR Hub Endpoint
     app.MapHub<PaymentHub>("/paymentHub");
-
     #endregion
 
-    #region SEEDING
+    #region SEEDING & AUTO-MIGRATION
     using (var scope = app.Services.CreateScope())
     {
-        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        ClientSeed.Seed(context);
-        ClientSeed.SeedData(context);
+        var services = scope.ServiceProvider;
+        try 
+        {
+            var context = services.GetRequiredService<AppDbContext>();
+            
+            // FIX: This line creates the tables if they don't exist before seeding
+            context.Database.Migrate(); 
+
+            ClientSeed.Seed(context);
+            ClientSeed.SeedData(context);
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "An error occurred during migration or seeding.");
+            // We don't throw here so the migration tool can finish its work
+        }
     }
     #endregion
 

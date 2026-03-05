@@ -1,21 +1,25 @@
-# 1. BUILD STAGE: Use .NET 10 SDK to handle your v10 NuGet packages
-FROM ://mcr.microsoft.com AS build
-WORKDIR /app
+# =========================
+# 1️⃣ BUILD STAGE
+# =========================
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
 
-# Copy csproj and restore dependencies
+# Copy project file and restore
 COPY *.csproj ./
 RUN dotnet restore
 
-# Copy everything else and build
+# Copy everything else and publish
 COPY . ./
-RUN dotnet publish -c Release -o out
+RUN dotnet publish -c Release -o /app/publish
 
-# 2. RUNTIME STAGE: Use .NET 8 Runtime as your target is net8.0
-FROM ://mcr.microsoft.com
+# =========================
+# 2️⃣ RUNTIME STAGE
+# =========================
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
-COPY --from=build /app/out .
 
-# Expose the port your app runs on
+COPY --from=build /app/publish .
+
 EXPOSE 8080
 
 ENTRYPOINT ["dotnet", "XYZUniversityAPI.dll"]

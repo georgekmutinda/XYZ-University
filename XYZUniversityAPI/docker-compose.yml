@@ -11,10 +11,10 @@ services:
       - "5251:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Host=postgres;Database=XYZUniversityDB;Username=postgres;Password=your_password
+      - ConnectionStrings__DefaultConnection=Host=postgres;Database=XYZUniversityDB;Username=postgres;Password=gkyalo
       - Redis__Connection=redis:6379
       - RabbitMQ__Host=rabbitmq
-      - JwtSettings__SecretKey=YOUR_SECURE_LONG_KEY_HERE
+      - JwtSettings__SecretKey=${JWT_SECRET_KEY}
     volumes:
       # Map host 'Logs' folder to container '/app/Logs' for persistent logging
       - ./Logs:/app/Logs
@@ -23,6 +23,7 @@ services:
       - redis
       - rabbitmq
     restart: always
+
 
   # PostgreSQL Database
   postgres:
@@ -36,6 +37,11 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   # Redis Cache
   redis:
