@@ -27,6 +27,10 @@ analytics, and notifications from the API request lifecycle.
 ## Why Redis?
 Redis is used to cache validation results and reduce database load
 under high traffic.
+Think of it as a high speed cache
+
+## Docker
+Used for scaling 
 
 ## Getting Started
 1. Clone the repository

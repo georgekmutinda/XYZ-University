@@ -7,28 +7,29 @@ on:
 
 jobs:
   deploy:
-    # Use the label you created during runner setup
+    # Use the 'self-hosted' runner we installed on your ProBook
     runs-on: self-hosted
 
     steps:
-      # 1. This pulls your code from GitHub into the runner's folder on your ProBook
+      # 1. Pull the latest code from GitHub into the runner's work folder
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. These commands run directly on your ProBook terminal
+      # 2. Run the deployment commands directly on the ProBook
       - name: Rebuild and Start Containers
         run: |
-          # The checkout action puts your code in a special folder. 
-          # We go there, build the image, and start the stack.
-          cd ${{ github.workspace }}
+          # Step into the folder where docker-compose.yml lives
+          cd ${{ github.workspace }}/XYZUniversityAPI
           
-          # Force a rebuild to catch any code changes
+          # Stop old containers and rebuild the API image
           docker compose down
           docker compose up -d --build
           
-          # Optional: remove old images to save disk space on the ProBook
+          # Clean up dangling images to save space
           docker image prune -f
 
-      # 3. Quick check to see if everything is running
+      # 3. Final verification to ensure containers are Up
       - name: Verify Status
-        run: docker compose ps
+        run: |
+          cd ${{ github.workspace }}/XYZUniversityAPI
+          docker compose ps
