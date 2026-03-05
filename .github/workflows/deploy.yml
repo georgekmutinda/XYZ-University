@@ -7,21 +7,28 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    # Use the label you created during runner setup
+    runs-on: self-hosted
 
     steps:
-
+      # 1. This pulls your code from GitHub into the runner's folder on your ProBook
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Deploy to server
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
-            cd ~/XYZ-University/XYZUniversityAPI
-            git pull origin main
-            docker compose down
-            docker compose up -d --build
+      # 2. These commands run directly on your ProBook terminal
+      - name: Rebuild and Start Containers
+        run: |
+          # The checkout action puts your code in a special folder. 
+          # We go there, build the image, and start the stack.
+          cd ${{ github.workspace }}
+          
+          # Force a rebuild to catch any code changes
+          docker compose down
+          docker compose up -d --build
+          
+          # Optional: remove old images to save disk space on the ProBook
+          docker image prune -f
+
+      # 3. Quick check to see if everything is running
+      - name: Verify Status
+        run: docker compose ps
